@@ -19,3 +19,15 @@ MCU 为 STM32F103C8T6（Cortex-M3 内核，主频 72MHz），使用 STM32CubeMX 
 ## 串口指令集
 
 指令 A 切换为避障模式，指令 B 切换为循迹模式，指令 0 切换为手动模式。手动模式下，指令 1 为停止，2 为前进，3 为后退，4 为左转，5 为右转，6 为原地左旋，7 为原地右旋，8 为加速，9 为减速。指令 K 打开蜂鸣器，指令 G 关闭蜂鸣器。
+
+## 自动避障演示
+
+
+https://github.com/user-attachments/assets/e15f6112-1b68-4506-a734-594a20b1023d
+
+
+## 寻迹功能演示
+
+
+https://github.com/user-attachments/assets/659313ef-a694-412e-af96-dc9d77df03aa
+
