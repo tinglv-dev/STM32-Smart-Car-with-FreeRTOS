@@ -23,7 +23,7 @@ MCU 为 STM32F103C8T6（Cortex-M3 内核，主频 72MHz），使用 STM32CubeMX 
 ## 自动避障演示
 
 
-https://github.com/user-attachments/assets/e15f6112-1b68-4506-a734-594a20b1023d
+https://github.com/user-attachments/assets/aviod
 
 
 ## 寻迹功能演示
