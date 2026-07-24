@@ -8,7 +8,7 @@ MCU 为 STM32F103C8T6（Cortex-M3 内核，主频 72MHz），使用 STM32CubeMX 
 
 ## 系统架构
 
-系统设计了 5 个 RTOS 任务。CmdTask 优先级为 High，栈大小 256 words，阻塞于消息队列接收，负责串口命令的解析与分发。ContralTask 优先级为 Normal，栈大小 512 words，以 20ms 为周期运行，是避障和循迹控制的主循环。OLEDDisplayTask 优先级为 Low，栈大小 348 words，500ms 周期刷新屏幕状态。KeyScanTask 优先级为 Low，栈大小 128 words，20ms 周期扫描按键并实现状态机式的模式切换。defaultTask 为 CubeMX 生成的默认占位任务，不承担实际业务。
+系统设计了 5 个 RTOS 任务。CmdTask 优先级为 High，栈大小 256 words，阻塞于消息队列接收，负责串口命令的解析与分发。ControlTask 优先级为 Normal，栈大小 512 words，以 20ms 为周期运行，是避障和循迹控制的主循环。OLEDDisplayTask 优先级为 Low，栈大小 348 words，500ms 周期刷新屏幕状态。KeyScanTask 优先级为 Low，栈大小 128 words，20ms 周期扫描按键并实现状态机式的模式切换。defaultTask 为 CubeMX 生成的默认占位任务，不承担实际业务。
 
 任务间通信主要依靠消息队列和互斥量两种机制。USART1 接收中断中调用 osMessageQueuePut（0 超时），将数据送入 UartCmdQueue，CmdTask 通过 osMessageQueueGet 阻塞式获取数据，实现了中断与任务的解耦。共享变量 mode、CarSpeed、BuzzerEnable、distanceMM 均通过 StartMutex 互斥量保护读写，利用优先级继承机制规避优先级反转问题。此外，由于 SysTick 被 FreeRTOS 占用，项目将 HAL 库的系统时基迁移到了 TIM1，通过 HAL_IncTick 实现两者互不干扰。
 
