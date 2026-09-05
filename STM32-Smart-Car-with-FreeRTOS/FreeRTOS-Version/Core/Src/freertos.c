@@ -264,7 +264,15 @@ void StartControlTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    uint8_t curMode;
+    osMutexAcquire(StartMutexHandle, osWaitForever);
+    curMode = mode;
+    osMutexRelease(StartMutexHandle);
+
+    if(curMode == 'A') Avoid_Run();
+    else if(curMode == 'B') Track_Run();
+
+    osDelay(pdMS_TO_TICKS(50)); 
   }
   /* USER CODE END StartControlTask */
 }
@@ -292,7 +300,7 @@ void StartOLEDDisplayTask(void *argument)
     speed_local  = CarSpeed;
     buzzer_local = BuzzerEnable;
     dist_local   = distanceMM;
-    osMutexRelease(StartMutexHandle);   // ????????,I2C??????
+    osMutexRelease(StartMutexHandle);  
 
     OLED_NewFrame();
 
@@ -314,7 +322,7 @@ void StartOLEDDisplayTask(void *argument)
 
     OLED_PrintASCIIString(0, 48, buzzer_local ? "Buzzer: Open" : "Buzzer: Close", &afont16x8, OLED_COLOR_NORMAL);
 
-    OLED_ShowFrame();   // I2C????,?????
+    OLED_ShowFrame(); 
 
     osDelay(pdMS_TO_TICKS(500));
   }
@@ -341,7 +349,7 @@ void StartKeyScanTask(void *argument)
     switch(keyState)
     {
       case IDLE:
-        if(pinVal == 0)   // ??
+        if(pinVal == 0)   
         {
           pressTick = osKernelGetTickCount();
           keyState = PRESSED;
@@ -349,18 +357,17 @@ void StartKeyScanTask(void *argument)
         break;
 
       case PRESSED:
-        if(pinVal == 1)   // ??
+        if(pinVal == 1)  
         {
           if(osKernelGetTickCount() - pressTick > pdMS_TO_TICKS(1000))
           {
-            // ???? ? ????
             osMutexAcquire(StartMutexHandle, osWaitForever);
             if(mode == '0') mode = 'A';
             else if(mode == 'A') mode = 'B';
             else mode = '0';
             osMutexRelease(StartMutexHandle);
 
-            Buzzer_Once();   // ?????,??osDelay?????
+            Buzzer_Once();   
           }
           keyState = IDLE;
         }
