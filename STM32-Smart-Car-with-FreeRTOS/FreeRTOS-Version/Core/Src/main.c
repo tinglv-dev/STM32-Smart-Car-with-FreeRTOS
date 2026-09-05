@@ -131,26 +131,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(mode == 'A') Avoid_Run();
-      else if(mode == 'B') Track_Run();
-	  
-		OLED_ShowStatus();
-
-	/*if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_8) == 0)
-	  {
-		  presstime = HAL_GetTick();
-		  isPressed = 1 ;
-	  }
-	  else if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_8) == 1&&isPressed == 1)
-	  {
-		  if(HAL_GetTick()- presstime > 1000)
-		  {
-			  if(mode=='0'){mode='A';Car_Stop();Buzzer_Once();}
-			  else if(mode=='A'){mode='B';Car_Stop();Buzzer_Once();}
-			  else if(mode=='B'){mode='0';Car_Stop();Buzzer_Once();}
-		  }
-		  isPressed = 0 ;
-	  }*/
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
